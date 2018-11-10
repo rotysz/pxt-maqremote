@@ -1,8 +1,8 @@
-const CMD_EMPTY = "empty"
 const CMD_FWD = "do_przod"
 const CMD_LEFT = "w_lewo"
 const CMD_RIGHT = "w_prawo"
 const CMD_STOP = "stop"
+const CMD_EMPTY = "empty"
 const CMD_SETSPEED = "predkosc"
 const CMD_SETSPEEDL = "p_prawy"
 const CMD_SETSPEEDR = "p_lewy"
@@ -15,7 +15,6 @@ const OFF = false
 const MSG_DIST = "odleg"
 const MSG_LINESENSORS = "czlini"
 
-const INIT_GROUP = 2
 
 let SpeedLeft: number = 0
 let SpeedRight: number = 0

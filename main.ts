@@ -1,18 +1,18 @@
 const CMD_EMPTY = "empty"
-const CMD_FWD = "do_przodu"
+const CMD_FWD = "do_przod"
 const CMD_LEFT = "w_lewo"
 const CMD_RIGHT = "w_prawo"
 const CMD_STOP = "stop"
 const CMD_SETSPEED = "predkosc"
 const CMD_SETSPEEDL = "p_prawy"
 const CMD_SETSPEEDR = "p_lewy"
-const CMD_CHGMTRSPEED = "zmienszybk"
+const CMD_CHGMTRSPEED = "zmienszy"
 const CMD_CHGGROUP = "grupa"
 
 const ON = true
 const OFF = false
 
-const MSG_DIST = "odleglosc"
+const MSG_DIST = "odleg"
 const MSG_LINESENSORS = "czlini"
 
 const INIT_GROUP = 2
@@ -23,10 +23,14 @@ let LastCmd: string = CMD_EMPTY
 let LastCmdTime: number = input.runningTime()
 let MotorOffTime: number = 0
 let RGrpEndTime: number = 0
+let DebugMode = false
 
 radio.setGroup(INIT_GROUP)
 
-
+input.onButtonPressed(Button.AB, function () {
+    DebugMode = !DebugMode
+    basic.showString(' D=' + DebugMode)
+})
 
 function CmdForward(On: boolean, Duration: number, SpeedL: number, SpeedR: number) {
     if (On) {
@@ -96,6 +100,10 @@ function CmdChangeRadioGroup(On: boolean, NewRadioGroup: number) {
 
 
 radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
+    if (DebugMode) {
+        basic.showString(Cmd)
+        basic.showNumber(CmdValue)
+    }
     if (Cmd == CMD_SETSPEED) CmdSetSpeed(CmdValue)
     if (Cmd == CMD_SETSPEEDL) CmdSetSpeedL(CmdValue)
     if (Cmd == CMD_SETSPEEDR) CmdSetSpeedR(CmdValue)

@@ -8,12 +8,18 @@ const CMD_SETSPEEDL = "p_prawy"
 const CMD_SETSPEEDR = "p_lewy"
 const CMD_CHGMTRSPEED = "zmienszy"
 const CMD_CHGGROUP = "grupa"
+const CMD_GETDIST = "odl"
+const CMD_GETLINE = "lsensor"
+const CMD_SETOPT = "set_opt"
 
 const ON = true
 const OFF = false
 
 const MSG_DIST = "odleg"
 const MSG_LINESENSORS = "czlini"
+
+const RET_DIST = "rodl"
+const RET_LINESENSORS = "rlsens"
 
 
 let SpeedLeft: number = 0
@@ -24,11 +30,22 @@ let MotorOffTime: number = 0
 let RGrpEndTime: number = 0
 let DebugMode = false
 
+let EnableMsgDist = false
+let EnableMsgLine = false
+
 radio.setGroup(INIT_GROUP)
 
 input.onButtonPressed(Button.AB, function () {
     DebugMode = !DebugMode
     basic.showString(' D=' + DebugMode)
+})
+
+input.onButtonPressed(Button.A, function () {
+    if (DebugMode) {
+        basic.showString('C')
+        RobotImp.Init()
+        basic.clearScreen()
+    }
 })
 
 function CmdForward(On: boolean, Duration: number, SpeedL: number, SpeedR: number) {
@@ -96,7 +113,18 @@ function CmdChangeRadioGroup(On: boolean, NewRadioGroup: number) {
     }
 }
 
+function CmdGetDist(Value: number) {
+    radio.sendValue(RET_DIST, RobotImp.GetDistance())
+}
 
+function CmdGetLSensors(Value: number) {
+    radio.sendValue(RET_LINESENSORS, RobotImp.LineSensorStatus())
+}
+
+function CmdSetOpt(Value: number) {
+    EnableMsgDist = (Value % 10) != 0
+    EnableMsgLine = (Math.idiv(Value, 10) % 10) != 0
+}
 
 radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (DebugMode) {
@@ -112,7 +140,9 @@ radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (Cmd == CMD_CHGMTRSPEED) CmdChangeMotorSpeed(CmdValue)
     if (Cmd == CMD_STOP) CmdStop()
     if (Cmd == CMD_CHGGROUP) CmdChangeRadioGroup(ON, CmdValue)
-
+    if (Cmd == CMD_GETDIST) CmdGetDist(CmdValue)
+    if (Cmd == CMD_GETLINE) CmdGetLSensors(CmdValue)
+    if (Cmd == CMD_SETOPT) CmdSetOpt(CmdValue)
 })
 
 
@@ -127,7 +157,7 @@ basic.forever(function () {
             CmdChangeRadioGroup(OFF, INIT_GROUP)
         }
     }
-    radio.sendValue(MSG_DIST, RobotImp.GetDistance())
-    radio.sendValue(MSG_LINESENSORS, RobotImp.LineSensorStatus())
-    basic.pause(10)
+    if (EnableMsgDist) radio.sendValue(MSG_DIST, RobotImp.GetDistance())
+    if (EnableMsgLine) radio.sendValue(MSG_LINESENSORS, RobotImp.LineSensorStatus())
+    basic.pause(2)
 })

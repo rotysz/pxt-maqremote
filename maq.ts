@@ -18,9 +18,14 @@ namespace RobotImp {
     export function GetDistance(): number {
         return maqueen.sensor(PingUnit.Centimeters);
     }
+    
     export function LineSensorStatus(): number {
         let Line1Sensor = maqueen.readPatrol(maqueen.Patrol.PatrolLeft)
         let Line2Sensor = maqueen.readPatrol(maqueen.Patrol.PatrolRight)
         return Line1Sensor + Line2Sensor * 10
     }
+   
+   export function Init() {
+     basic.pause(1000)
+   }
 }

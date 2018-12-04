@@ -25,7 +25,7 @@ const MSG_LINESENSORS = "czlini"
 const RET_DIST = "rodl"
 const RET_LINESENSORS = "rlsens"
 const RET_DURATION = "pczas"
-const RET_END_TIME ="kczas"
+const RET_END_TIME = "kczas"
 
 
 
@@ -158,7 +158,7 @@ function CmdGetDuration() {
 }
 
 function CmdEndMotorTime() {
-    radio.sendValue(RET_END_TIME,input.runningTime())
+    radio.sendValue(RET_END_TIME, input.runningTime())
 }
 
 function CmdSetOpt(Value: number) {
@@ -166,25 +166,34 @@ function CmdSetOpt(Value: number) {
     EnableMsgLine = (Math.idiv(Value, 10) % 10) != 0
 }
 
-radio.onReceivedString(function (receivedString: string) {
-    let Cmd =  receivedString.substr(0,4)
-    DspVal = receivedString.substr(4)
-    if (Cmd == CMD_DISPSTR) control.inBackground(function () {
-        basic.showString(DspVal)
-    })
-    if (Cmd == CMD_DSPLED) control.inBackground(function () {
-       for (let i = 0; i <25; i++) {
-         if (DspVal.charAt(i) == '0') led.unplot(Math.idiv(i,5), i % 5)
-         else led.plot(Math.idiv(i, 5), i % 5)  
-       } 
-    })
-})
+function CmdDisplay(receivedString: string) {
 
+    let len = receivedString.length
+    if (len > 4) {
+        let Cmd = receivedString.substr(0, 4)
+        let DspVal = receivedString.substr(4, len - 4)
+        if (DebugMode) {
+            basic.showString(Cmd + ">>" + DspVal)
+        }
+        if (Cmd == CMD_DISPSTR) {
+            control.inBackground(function () {
+                basic.showString(DspVal)
+            })
+        }
+        if (Cmd == CMD_DSPLED) {
+            for (let i = 0; i < len - 4; i++) {
+                if (DspVal.charAt(i) == '0') led.unplot(i % 5, Math.idiv(i, 5))
+                else led.plot(i % 5, Math.idiv(i, 5))
+            }
+        }
+    }
+}
 radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (DebugMode) {
         basic.showString(Cmd)
         basic.showNumber(CmdValue)
     }
+    if (Cmd.charAt(0) == '#') CmdDisplay(Cmd)
     if (Cmd == CMD_SETSPEED) CmdSetSpeed(CmdValue)
     if (Cmd == CMD_SETSPEEDL) CmdSetSpeedL(CmdValue)
     if (Cmd == CMD_SETSPEEDR) CmdSetSpeedR(CmdValue)

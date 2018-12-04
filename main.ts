@@ -13,6 +13,9 @@ const CMD_GETLINE = "lsensor"
 const CMD_SETOPT = "set_opt"
 const CMD_GETDURATION = "dczas"
 
+const CMD_DISPSTR = "#ST#"
+const CMD_DSPLED = "#LD#"
+
 const ON = true
 const OFF = false
 
@@ -36,6 +39,8 @@ let DebugMode = false
 
 let EnableMsgDist = false
 let EnableMsgLine = false
+
+let DspVal = ''
 
 radio.setGroup(INIT_GROUP)
 
@@ -160,6 +165,20 @@ function CmdSetOpt(Value: number) {
     EnableMsgDist = (Value % 10) != 0
     EnableMsgLine = (Math.idiv(Value, 10) % 10) != 0
 }
+
+radio.onReceivedString(function (receivedString: string) {
+    let Cmd =  receivedString.substr(0,4)
+    DspVal = receivedString.substr(4)
+    if (Cmd == CMD_DISPSTR) control.inBackground(function () {
+        basic.showString(DspVal)
+    })
+    if (Cmd == CMD_DSPLED) control.inBackground(function () {
+       for (let i = 0; i <25; i++) {
+         if (DspVal.charAt(i) == '0') led.unplot(Math.idiv(i,5), i % 5)
+         else led.plot(Math.idiv(i, 5), i % 5)  
+       } 
+    })
+})
 
 radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (DebugMode) {

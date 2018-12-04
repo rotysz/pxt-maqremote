@@ -11,6 +11,7 @@ const CMD_CHGGROUP = "grupa"
 const CMD_GETDIST = "odl"
 const CMD_GETLINE = "lsensor"
 const CMD_SETOPT = "set_opt"
+const CMD_GETDURATION = "dczas"
 
 const ON = true
 const OFF = false
@@ -20,6 +21,9 @@ const MSG_LINESENSORS = "czlini"
 
 const RET_DIST = "rodl"
 const RET_LINESENSORS = "rlsens"
+const RET_DURATION = "pczas"
+const RET_END_TIME ="kczas"
+
 
 
 let SpeedLeft: number = 0
@@ -144,6 +148,14 @@ function CmdGetLSensors(Value: number) {
     radio.sendValue(RET_LINESENSORS, RobotImp.LineSensorStatus())
 }
 
+function CmdGetDuration() {
+    radio.sendValue(RET_DURATION, MotorOffTime - input.runningTime())
+}
+
+function CmdEndMotorTime() {
+    radio.sendValue(RET_END_TIME,input.runningTime())
+}
+
 function CmdSetOpt(Value: number) {
     EnableMsgDist = (Value % 10) != 0
     EnableMsgLine = (Math.idiv(Value, 10) % 10) != 0
@@ -166,6 +178,7 @@ radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (Cmd == CMD_GETDIST) CmdGetDist(CmdValue)
     if (Cmd == CMD_GETLINE) CmdGetLSensors(CmdValue)
     if (Cmd == CMD_SETOPT) CmdSetOpt(CmdValue)
+    if (Cmd == CMD_GETDURATION) CmdGetDuration()
 })
 
 
@@ -173,6 +186,7 @@ basic.forever(function () {
     if (MotorOffTime != 0) {
         if ((MotorOffTime <= input.runningTime())) {
             CmdForward(OFF, 0, 0, 0)
+            CmdEndMotorTime()
         }
     }
     if (RGrpEndTime != 0) {

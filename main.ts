@@ -166,6 +166,20 @@ function CmdSetOpt(Value: number) {
     EnableMsgLine = (Math.idiv(Value, 10) % 10) != 0
 }
 
+function ShowEncodedImg(EImg: string) {
+    let len = EImg.length
+    let pos = 0
+    while (pos < len) {
+        let digits = EImg.substr(pos, 2)
+        let val = parseInt(digits)
+        for (let i = 0; i < 5; i++) {
+            if ((val % 2) == 1) led.plot(4 - i, Math.idiv(pos, 2))
+            else led.unplot(4 - i, Math.idiv(pos, 2))
+            val = Math.idiv(val, 2)
+        }
+        pos = pos + 2
+    }
+}
 function CmdDisplay(receivedString: string) {
 
     let len = receivedString.length
@@ -181,10 +195,7 @@ function CmdDisplay(receivedString: string) {
             })
         }
         if (Cmd == CMD_DSPLED) {
-            for (let i = 0; i < len - 4; i++) {
-                if (DspVal.charAt(i) == '0') led.unplot(i % 5, Math.idiv(i, 5))
-                else led.plot(i % 5, Math.idiv(i, 5))
-            }
+            ShowEncodedImg(DspVal)
         }
     }
 }

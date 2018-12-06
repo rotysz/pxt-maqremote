@@ -43,7 +43,11 @@ let EnableMsgLine = false
 
 let DspVal = ''
 
-radio.setGroup(INIT_GROUP)
+let RadioCh = INIT_GROUP
+if (input.buttonIsPressed(Button.A)) RadioCh = INIT_GROUP + 10
+else if (input.buttonIsPressed(Button.B)) RadioCh = INIT_GROUP + 20
+radio.setGroup(RadioCh)
+basic.showString("CH="+RadioCh)
 
 input.onButtonPressed(Button.AB, function () {
     DebugMode = !DebugMode
@@ -201,7 +205,7 @@ function CmdDisplay(receivedString: string) {
     }
 }
 
-function CmdDspIcon(Icon :IconNames) {
+function CmdDspIcon(Icon: IconNames) {
     basic.showIcon(Icon)
 }
 

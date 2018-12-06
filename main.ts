@@ -15,6 +15,7 @@ const CMD_GETDURATION = "dczas"
 
 const CMD_DISPSTR = "#ST#"
 const CMD_DSPLED = "#LD#"
+const CMD_DSPICON = "w_iko"
 
 const ON = true
 const OFF = false
@@ -199,6 +200,11 @@ function CmdDisplay(receivedString: string) {
         }
     }
 }
+
+function CmdDspIcon(Icon :IconNames) {
+    basic.showIcon(Icon)
+}
+
 radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (DebugMode) {
         basic.showString(Cmd)
@@ -218,6 +224,7 @@ radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (Cmd == CMD_GETLINE) CmdGetLSensors(CmdValue)
     if (Cmd == CMD_SETOPT) CmdSetOpt(CmdValue)
     if (Cmd == CMD_GETDURATION) CmdGetDuration()
+    if (Cmd == CMD_DSPICON) CmdDspIcon(CmdValue)
 })
 
 

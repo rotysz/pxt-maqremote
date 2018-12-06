@@ -28,4 +28,28 @@ namespace RobotImp {
    export function Init() {
      basic.pause(1000)
    }
+
+   export function FollowTheLine() {
+       let Sens = RobotImp.LineSensorStatus()
+       do {
+           Sens = RobotImp.LineSensorStatus()
+           if (Sens == 11) {
+               RobotImp.MotorLeft(30)
+               RobotImp.MotorRight(30)
+           } else if (Sens == 10) {
+               RobotImp.MotorLeft(0)
+               RobotImp.MotorRight(20)
+           } else if (Sens == 1) {
+               RobotImp.MotorLeft(20)
+               RobotImp.MotorRight(0)
+           } else {
+               RobotImp.MotorLeft(20)
+               RobotImp.MotorRight(20)
+           }
+           basic.pause(10)
+       } while (!input.buttonIsPressed(Button.A))
+       RobotImp.MotorLeft(0)
+       RobotImp.MotorRight(0)
+    
+   }
 }

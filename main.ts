@@ -12,6 +12,7 @@ const CMD_GETDIST = "odl"
 const CMD_GETLINE = "lsensor"
 const CMD_SETOPT = "set_opt"
 const CMD_GETDURATION = "dczas"
+const CMD_MRUG = "mrugaj"
 
 const CMD_DISPSTR = "#ST#"
 const CMD_DSPLED = "#LD#"
@@ -47,7 +48,7 @@ let RadioCh = INIT_GROUP
 if (input.buttonIsPressed(Button.A)) RadioCh = INIT_GROUP + 10
 else if (input.buttonIsPressed(Button.B)) RadioCh = INIT_GROUP + 20
 radio.setGroup(RadioCh)
-basic.showString("CH="+RadioCh)
+basic.showString("CH=" + RadioCh)
 
 input.onButtonPressed(Button.AB, function () {
     DebugMode = !DebugMode
@@ -190,6 +191,10 @@ function CmdDspIcon(Icon: IconNames) {
     basic.showIcon(Icon)
 }
 
+function CmdMrugaj(IleRazy: number) {
+    RobotImp.Mrugaj(IleRazy)
+}
+
 radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (DebugMode) {
         basic.showString(Cmd)
@@ -210,6 +215,7 @@ radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (Cmd == CMD_SETOPT) CmdSetOpt(CmdValue)
     if (Cmd == CMD_GETDURATION) CmdGetDuration()
     if (Cmd == CMD_DSPICON) CmdDspIcon(CmdValue)
+    if (Cmd == CMD_MRUG) CmdMrugaj(CmdValue)
 })
 
 

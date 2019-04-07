@@ -20,6 +20,7 @@ const CMD_LEDOFFR = "ledoffr"
 const CMD_RGBBLINK = "mrugrgb"
 const CMD_RGBON = "rgbon"
 const CMD_RGBOFF = "rgboff"
+const CMD_PLAY = "graj"
 
 const CMD_DISPSTR = "#ST#"
 const CMD_DSPLED = "#LD#"
@@ -60,6 +61,13 @@ basic.showString("CH=" + RadioCh)
 // show demo
 RobotImp.LEDBlink(2)
 RobotImp.RGBLEDBlink(20)
+CmdPlay(Note.C)
+CmdPlay(Note.C)
+CmdPlay(Note.C)
+CmdPlay(Note.G3)
+CmdPlay(Note.A3)
+CmdPlay(Note.A3)
+CmdPlay(Note.G3)
 /*
 RobotImp.RGBOn(0, NeoPixelColors.Red)
 RobotImp.RGBOn(1, NeoPixelColors.Blue)
@@ -250,6 +258,12 @@ function CmdRGBOn(ColorNum: number) {
 function CmdRGBOff() {
     RobotImp.RGBAllOff()
 }
+
+function CmdPlay(NoteNum: number) {
+    music.playTone(NoteNum, 200)
+}
+
+
 radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (DebugMode) {
         basic.showString(Cmd)
@@ -278,6 +292,7 @@ radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (Cmd == CMD_LEDOFFR) CmdLEDOffR()
     if (Cmd == CMD_RGBON) CmdRGBOn(CmdValue)
     if (Cmd == CMD_RGBOFF) CmdRGBOff()
+    if (Cmd == CMD_PLAY) CmdPlay(CmdValue)
 })
 
 

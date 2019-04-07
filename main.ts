@@ -12,7 +12,12 @@ const CMD_GETDIST = "odl"
 const CMD_GETLINE = "lsensor"
 const CMD_SETOPT = "set_opt"
 const CMD_GETDURATION = "dczas"
-const CMD_MRUG = "mrugaj"
+const CMD_LEDBLINK = "mrugled"
+const CMD_LEDONL = "ledonl"
+const CMD_LEDONR = "ledonr"
+const CMD_LEDOFFL = "ledoffl"
+const CMD_LEDOFFR = "ledoffr"
+const CMD_RGBBLINK = "mrugrgb"
 
 const CMD_DISPSTR = "#ST#"
 const CMD_DSPLED = "#LD#"
@@ -49,6 +54,11 @@ if (input.buttonIsPressed(Button.A)) RadioCh = INIT_GROUP + 10
 else if (input.buttonIsPressed(Button.B)) RadioCh = INIT_GROUP + 20
 radio.setGroup(RadioCh)
 basic.showString("CH=" + RadioCh)
+
+// show demo
+RobotImp.LEDBlink(2)
+RobotImp.RGBLEDBlink(20)
+
 
 input.onButtonPressed(Button.AB, function () {
     DebugMode = !DebugMode
@@ -191,8 +201,28 @@ function CmdDspIcon(Icon: IconNames) {
     basic.showIcon(Icon)
 }
 
-function CmdMrugaj(IleRazy: number) {
-    RobotImp.Mrugaj(IleRazy)
+function CmdLEDBlink(CountNumber: number) {
+    RobotImp.LEDBlink(CountNumber)
+}
+
+function CmdLEDOnL() {
+    RobotImp.LEDOnL()
+}
+
+function CmdLEDOnR() {
+    RobotImp.LEDOnR()
+}
+
+function CmdLEDOffL() {
+    RobotImp.LEDOffL()
+}
+
+function CmdLEDOffR() {
+    RobotImp.LEDOffR()
+}
+
+function CmdRGBLEDBlink(CountNumber: number) {
+    RobotImp.RGBLEDBlink(CountNumber)
 }
 
 radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
@@ -215,7 +245,12 @@ radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (Cmd == CMD_SETOPT) CmdSetOpt(CmdValue)
     if (Cmd == CMD_GETDURATION) CmdGetDuration()
     if (Cmd == CMD_DSPICON) CmdDspIcon(CmdValue)
-    if (Cmd == CMD_MRUG) CmdMrugaj(CmdValue)
+    if (Cmd == CMD_LEDBLINK) CmdLEDBlink(CmdValue)
+    if (Cmd == CMD_RGBBLINK) CmdRGBLEDBlink(CmdValue)
+    if (Cmd == CMD_LEDONL) CmdLEDOnL()
+    if (Cmd == CMD_LEDONR) CmdLEDOnR()
+    if (Cmd == CMD_LEDOFFL) CmdLEDOffL()
+    if (Cmd == CMD_LEDOFFR) CmdLEDOffR()
 })
 
 

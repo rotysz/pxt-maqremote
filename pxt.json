@@ -1,11 +1,12 @@
 {
-    "name": "pxt-maqremote",
+    "name": "pxt-maqremote_v5",
     "version": "0.0.15",
     "description": "",
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "maqueen": "github:rotysz/maqueen#253b31f1950b5e29cbb031828bf13dcdcc209fa5"
+        "maqueen": "github:rotysz/maqueen#253b31f1950b5e29cbb031828bf13dcdcc209fa5",
+        "neopixel": "github:microsoft/pxt-neopixel#v0.6.10"
     },
     "files": [
         "README.md",

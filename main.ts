@@ -243,7 +243,7 @@ function CmdRGBLEDBlink(CountNumber: number) {
     RobotImp.RGBLEDBlink(CountNumber)
 }
 
-function CmdRGBOn(ColorNum: NeoPixelColors) {
+function CmdRGBOn(ColorNum: number) {
     RobotImp.RGBAllOn(ColorNum)
 }
 

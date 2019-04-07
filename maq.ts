@@ -100,4 +100,24 @@ namespace RobotImp {
         rgb_leds.clear()
     }
 
+    export function RGBOn(LedNumber: number, ColorNum: NeoPixelColors) {
+        rgb_leds.setPixelColor(LedNumber, ColorNum)
+        rgb_leds.show()
+    }
+
+    export function RGBAllOn(ColorNum: NeoPixelColors) {
+        rgb_leds.showColor(ColorNum)
+        rgb_leds.show()
+    }
+
+    export function RGBOff(LedNumber: number) {
+        rgb_leds.setPixelColor(LedNumber, 0)
+        rgb_leds.show()
+    }
+
+    export function RGBAllOff() {
+        rgb_leds.showColor(0)
+        rgb_leds.clear()
+    }
+
 }

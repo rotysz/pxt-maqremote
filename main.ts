@@ -18,6 +18,8 @@ const CMD_LEDONR = "ledonr"
 const CMD_LEDOFFL = "ledoffl"
 const CMD_LEDOFFR = "ledoffr"
 const CMD_RGBBLINK = "mrugrgb"
+const CMD_RGBON = "rgbon"
+const CMD_RGBOFF = "rgboff"
 
 const CMD_DISPSTR = "#ST#"
 const CMD_DSPLED = "#LD#"
@@ -58,8 +60,24 @@ basic.showString("CH=" + RadioCh)
 // show demo
 RobotImp.LEDBlink(2)
 RobotImp.RGBLEDBlink(20)
-
-
+/*
+RobotImp.RGBOn(0, NeoPixelColors.Red)
+RobotImp.RGBOn(1, NeoPixelColors.Blue)
+RobotImp.RGBOn(2, NeoPixelColors.Purple)
+RobotImp.RGBOn(3, NeoPixelColors.Orange)
+basic.pause(1000)
+RobotImp.RGBOff(0)
+basic.pause(1000)
+RobotImp.RGBOff(1)
+basic.pause(1000)
+RobotImp.RGBOff(2)
+basic.pause(1000)
+RobotImp.RGBOff(3)
+basic.pause(1000)
+RobotImp.RGBAllOn(NeoPixelColors.Yellow)
+basic.pause(1000)
+RobotImp.RGBAllOff()
+*/
 input.onButtonPressed(Button.AB, function () {
     DebugMode = !DebugMode
     basic.showString(' D=' + DebugMode)
@@ -225,6 +243,13 @@ function CmdRGBLEDBlink(CountNumber: number) {
     RobotImp.RGBLEDBlink(CountNumber)
 }
 
+function CmdRGBOn(ColorNum: NeoPixelColors) {
+    RobotImp.RGBAllOn(ColorNum)
+}
+
+function CmdRGBOff() {
+    RobotImp.RGBAllOff()
+}
 radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (DebugMode) {
         basic.showString(Cmd)
@@ -251,6 +276,8 @@ radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (Cmd == CMD_LEDONR) CmdLEDOnR()
     if (Cmd == CMD_LEDOFFL) CmdLEDOffL()
     if (Cmd == CMD_LEDOFFR) CmdLEDOffR()
+    if (Cmd == CMD_RGBON) CmdRGBOn(CmdValue)
+    if (Cmd == CMD_RGBOFF) CmdRGBOff()
 })
 
 

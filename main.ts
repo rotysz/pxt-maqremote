@@ -12,7 +12,15 @@ const CMD_GETDIST = "odl"
 const CMD_GETLINE = "lsensor"
 const CMD_SETOPT = "set_opt"
 const CMD_GETDURATION = "dczas"
-const CMD_MRUG = "mrugaj"
+const CMD_LEDBLINK = "mrugled"
+const CMD_LEDONL = "ledonl"
+const CMD_LEDONR = "ledonr"
+const CMD_LEDOFFL = "ledoffl"
+const CMD_LEDOFFR = "ledoffr"
+const CMD_RGBBLINK = "mrugrgb"
+const CMD_RGBON = "rgbon"
+const CMD_RGBOFF = "rgboff"
+const CMD_PLAY = "graj"
 
 const CMD_DISPSTR = "#ST#"
 const CMD_DSPLED = "#LD#"
@@ -50,6 +58,34 @@ else if (input.buttonIsPressed(Button.B)) RadioCh = INIT_GROUP + 20
 radio.setGroup(RadioCh)
 basic.showString("CH=" + RadioCh)
 
+// show demo
+RobotImp.LEDBlink(2)
+RobotImp.RGBLEDBlink(20)
+CmdPlay(Note.C)
+CmdPlay(Note.C)
+CmdPlay(Note.C)
+CmdPlay(Note.G3)
+CmdPlay(Note.A3)
+CmdPlay(Note.A3)
+CmdPlay(Note.G3)
+/*
+RobotImp.RGBOn(0, NeoPixelColors.Red)
+RobotImp.RGBOn(1, NeoPixelColors.Blue)
+RobotImp.RGBOn(2, NeoPixelColors.Purple)
+RobotImp.RGBOn(3, NeoPixelColors.Orange)
+basic.pause(1000)
+RobotImp.RGBOff(0)
+basic.pause(1000)
+RobotImp.RGBOff(1)
+basic.pause(1000)
+RobotImp.RGBOff(2)
+basic.pause(1000)
+RobotImp.RGBOff(3)
+basic.pause(1000)
+RobotImp.RGBAllOn(NeoPixelColors.Yellow)
+basic.pause(1000)
+RobotImp.RGBAllOff()
+*/
 input.onButtonPressed(Button.AB, function () {
     DebugMode = !DebugMode
     basic.showString(' D=' + DebugMode)
@@ -191,9 +227,42 @@ function CmdDspIcon(Icon: IconNames) {
     basic.showIcon(Icon)
 }
 
-function CmdMrugaj(IleRazy: number) {
-    RobotImp.Mrugaj(IleRazy)
+function CmdLEDBlink(CountNumber: number) {
+    RobotImp.LEDBlink(CountNumber)
 }
+
+function CmdLEDOnL() {
+    RobotImp.LEDOnL()
+}
+
+function CmdLEDOnR() {
+    RobotImp.LEDOnR()
+}
+
+function CmdLEDOffL() {
+    RobotImp.LEDOffL()
+}
+
+function CmdLEDOffR() {
+    RobotImp.LEDOffR()
+}
+
+function CmdRGBLEDBlink(CountNumber: number) {
+    RobotImp.RGBLEDBlink(CountNumber)
+}
+
+function CmdRGBOn(ColorNum: number) {
+    RobotImp.RGBAllOn(ColorNum)
+}
+
+function CmdRGBOff() {
+    RobotImp.RGBAllOff()
+}
+
+function CmdPlay(NoteNum: number) {
+    music.playTone(NoteNum, 200)
+}
+
 
 radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (DebugMode) {
@@ -215,7 +284,15 @@ radio.onReceivedValue(function (Cmd: string, CmdValue: number) {
     if (Cmd == CMD_SETOPT) CmdSetOpt(CmdValue)
     if (Cmd == CMD_GETDURATION) CmdGetDuration()
     if (Cmd == CMD_DSPICON) CmdDspIcon(CmdValue)
-    if (Cmd == CMD_MRUG) CmdMrugaj(CmdValue)
+    if (Cmd == CMD_LEDBLINK) CmdLEDBlink(CmdValue)
+    if (Cmd == CMD_RGBBLINK) CmdRGBLEDBlink(CmdValue)
+    if (Cmd == CMD_LEDONL) CmdLEDOnL()
+    if (Cmd == CMD_LEDONR) CmdLEDOnR()
+    if (Cmd == CMD_LEDOFFL) CmdLEDOffL()
+    if (Cmd == CMD_LEDOFFR) CmdLEDOffR()
+    if (Cmd == CMD_RGBON) CmdRGBOn(CmdValue)
+    if (Cmd == CMD_RGBOFF) CmdRGBOff()
+    if (Cmd == CMD_PLAY) CmdPlay(CmdValue)
 })
 
 

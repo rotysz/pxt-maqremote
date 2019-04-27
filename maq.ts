@@ -4,6 +4,12 @@
  */
 const INIT_GROUP = 2
 
+let BLUE = 0
+let GREEN = 0
+let RED = 0
+let rgb_leds: neopixel.Strip = null
+rgb_leds = neopixel.create(DigitalPin.P15, 4, NeoPixelMode.RGB)
+
 namespace RobotImp {
     export function MotorLeft(SpeedVal: number) {
         if (SpeedVal >= 0) maqueen.MotorRun(maqueen.aMotors.M1, maqueen.Dir.CW, SpeedVal)
@@ -52,7 +58,7 @@ namespace RobotImp {
         RobotImp.MotorRight(0)
     }
 
-    export function Mrugaj(NumberVal: number) {
+    export function LEDBlink(NumberVal: number) {
         for (let i = 0; i < NumberVal; i++) {
             maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOn)
             maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOff)
@@ -63,6 +69,59 @@ namespace RobotImp {
         }
         maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOff)
         maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOff)
+    }
+
+    export function LEDOnL() {
+        maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOn)
+        //maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOff)
+    }
+
+    export function LEDOnR() {
+        maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOn)
+    }
+
+    export function LEDOffL() {
+        maqueen.writeLED(maqueen.LED.LEDLeft, maqueen.LEDswitch.turnOff)
+    }
+
+    export function LEDOffR() {
+        maqueen.writeLED(maqueen.LED.LEDRight, maqueen.LEDswitch.turnOff)
+    }
+
+    export function RGBLEDBlink(NumberVal: number) {
+        rgb_leds.showRainbow(1, 260)
+        rgb_leds.show()
+        for (let i = 0; i < NumberVal; i++) {
+            rgb_leds.rotate(1)
+            rgb_leds.show()
+            basic.pause(100)
+        }
+        rgb_leds.showColor(0)
+        rgb_leds.clear()
+    }
+
+    export function RGBOn(LedNumber: number, ColorNum: number) {
+        rgb_leds.setPixelColor(LedNumber, ColorNum)
+        rgb_leds.show()
+    }
+
+    export function RGBAllOn(ColorNum: number) {
+        rgb_leds.showColor(ColorNum)
+        rgb_leds.setPixelColor(0, ColorNum)
+        rgb_leds.setPixelColor(1, ColorNum)
+        rgb_leds.setPixelColor(2, ColorNum)
+        rgb_leds.setPixelColor(3, ColorNum)
+        rgb_leds.show()
+    }
+
+    export function RGBOff(LedNumber: number) {
+        rgb_leds.setPixelColor(LedNumber, 0)
+        rgb_leds.show()
+    }
+
+    export function RGBAllOff() {
+        rgb_leds.showColor(0)
+        rgb_leds.clear()
     }
 
 }
